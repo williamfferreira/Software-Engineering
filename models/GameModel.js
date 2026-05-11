@@ -1,14 +1,24 @@
 class GameModel {
     constructor() {
-        // Dicionários de palavras por idioma
-        this.dictionaries = {
+        // Constantes de configuração
+        this.MAX_ROWS = 6;
+        this.WORD_LENGTH = 5;
+        this.POINTS_FOR_CORRECT_LETTER = 10;
+        this.POINTS_FOR_PRESENT_LETTER = 5;
+
+        // Mantém os nomes esperados pelo Controller (compatibilidade)
+        this.maxRows = this.MAX_ROWS;
+        this.maxCols = this.WORD_LENGTH;
+
+        // Dicionários originais
+        this.rawDictionaries = {
             pt: ["TESTE", "CLASSE", "DADOS", "LOGIC", "PILHA", "SUITE"],
             en: ["CLEAN", "SMELL", "PRINT", "CODE", "FILES", "STACK"]
         };
 
-        // Configurações do jogo
-        this.maxRows = 6;
-        this.maxCols = 5;
+        // Dicionários validados
+        // A palavra "CODE" (4 letras) será removida automaticamente.
+        this.dictionaries = this.buildValidatedDictionaries();
 
         // Estado da partida
         this.language = "";
@@ -24,9 +34,28 @@ class GameModel {
     }
 
     createEmptyBoard() {
-        return Array.from({ length: this.maxRows }, () =>
-            Array(this.maxCols).fill("")
+        return Array.from(
+            { length: this.MAX_ROWS },
+            () => Array(this.WORD_LENGTH).fill("")
         );
+    }
+
+    buildValidatedDictionaries() {
+        const validatedDictionaries = {};
+
+        for (const language in this.rawDictionaries) {
+            validatedDictionaries[language] =
+                this.rawDictionaries[language].filter(word =>
+                    this.isValidWord(word)
+                );
+        }
+
+        return validatedDictionaries;
+    }
+
+    isValidWord(word) {
+        return typeof word === "string" &&
+               word.length === this.WORD_LENGTH;
     }
 
     startGame(language) {
@@ -45,7 +74,7 @@ class GameModel {
     }
 
     insertLetter(letter) {
-        if (this.currentCol < this.maxCols) {
+        if (this.currentCol < this.WORD_LENGTH) {
             this.board[this.currentRow][this.currentCol] = letter;
             this.currentCol++;
         }
@@ -59,7 +88,7 @@ class GameModel {
     }
 
     isCurrentWordComplete() {
-        return this.currentCol === this.maxCols;
+        return this.currentCol === this.WORD_LENGTH;
     }
 
     getCurrentWord() {
@@ -70,13 +99,13 @@ class GameModel {
         const currentWord = this.getCurrentWord();
         const results = [];
 
-        for (let i = 0; i < this.maxCols; i++) {
-            if (currentWord[i] === this.secretWord[i]) {
+        for (let index = 0; index < this.WORD_LENGTH; index++) {
+            if (currentWord[index] === this.secretWord[index]) {
                 results.push("correct");
-                this.score += 10;
-            } else if (this.secretWord.includes(currentWord[i])) {
+                this.score += this.POINTS_FOR_CORRECT_LETTER;
+            } else if (this.secretWord.includes(currentWord[index])) {
                 results.push("present");
-                this.score += 5;
+                this.score += this.POINTS_FOR_PRESENT_LETTER;
             } else {
                 results.push("absent");
             }
@@ -93,11 +122,13 @@ class GameModel {
         this.currentRow++;
         this.currentCol = 0;
 
-        if (this.currentRow === this.maxRows) {
+        if (this.currentRow === this.MAX_ROWS) {
             this.gameEnded = true;
         }
-    }
+    } 
 
+
+    
     nextRound() {
         this.round++;
         this.startGame(this.language);
