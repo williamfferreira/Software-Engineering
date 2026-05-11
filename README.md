@@ -58,20 +58,9 @@ cd Software-Engineering
 
 ### 3. Executar o projeto
 
-Abra o arquivo `index.html` diretamente em seu navegador.
-
----
-
-### ⚠️ Observação
-
-Este projeto não requer instalação de dependências ou configuração adicional, pois foi desenvolvido utilizando apenas:
-
-* HTML
-* CSS
-* JavaScript puro
-
----
-
+```bash
+start index.html
+```
 
 ## 🧠 Arquitetura do Projeto (MVC)
 
