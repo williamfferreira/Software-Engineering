@@ -1,6 +1,6 @@
 # 🎮 Wordle Multi
 
-### 📚 Projeto de Engenharia de Software
+### 📚 Projeto de Engenharia de Software 
 
 **Universidade Federal de Goiás (UFG)**
 
