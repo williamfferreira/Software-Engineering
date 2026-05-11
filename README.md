@@ -8,8 +8,8 @@
 
 ## 👨‍🎓 Integrantes
 
-**William Félix Ferreira Alves da Silva** — 202405859
-**Arthur Rodrigues Martins** — 202405845
+**William Félix Ferreira Alves da Silva** 202405859 —
+**Arthur Rodrigues Martins** 202405845
 
 ---
 
